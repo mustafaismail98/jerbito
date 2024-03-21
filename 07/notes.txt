@@ -1,0 +1,93 @@
+les modules ont des types et les signature ont du module
+
+un module c'est pas une classe parce qu'il y a pas d'héritage
+
+Le modeule c'est un fichier qu'on compile donc pas comme en POO classe et objet qui existe en mémoire. 
+
+
+On peut déclarer un type de signature de module toute seule :
+module type DicoType = 
+sig
+  type 'a t
+  val empty : 'a t
+  val find : int -> 'a t -> 'a
+  val add : int * 'a -> 'a t -> 'a t
+  val del : int -> 'a t -> 'a t
+end
+
+module Dico1 : DictoType = MO7.Dico1;;
+
+
+
+-------------------------
+Set 
+
+Set.Make : c'est un foncteur
+
+On lui founrit un type et une fonction 
+
+module IntSet = Set.Make(struct 
+type t = int
+let compare a b = a - b 
+end
+)
+
+
+
+
+
+% Utilisation du foncteur Set(pour les ensemble)
+le foncteur d'ensemble donne d'un certain type 
+
+module IntSet = Set.Make(struct 
+type t = int // type de nombre d'element
+let compare a b = a - b 
+end
+)
+
+et comment l'implementer 
+
+let has_dupes u = 
+let set = IntSet.of_List u in
+let len = IntSet.cardinal set in 
+len <> List.length u;;
+
+
+let has_dupe l =
+    let rec ensemble sl = 
+    match sl with 
+    | [] -> IntSet.empty
+    | x :: xs -> IntSet.add x (ensemble xs)
+    in 
+  List.length l > IntSet.cardinal (ensemble l)
+)
+
+
+
+
+La définition d'un module mais il y a des trous
+La raison pour laquelle on a besoin de foncteur:
+
+
+
+% Foncteur Map (dictionnaire)
+Comment il marche ? : 
+
+on a 2 type : 
+type t -> type de clé et la fonction compare sert a comparer des clés  
+
+module IntMap = Map.Make (struct
+type t = int  // le type qu'on donne ici c'est le type ce clé 
+
+let compare a b = a - b
+end
+)
+
+
+Exemple map :
+let d  = [(1, "rouge"); (2, "vert")]
+let dico = IntMap.of_list d;;
+
+
+
+% EXOO 
